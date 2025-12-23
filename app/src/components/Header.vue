@@ -19,7 +19,7 @@ const ActiverMenuBurger = () => {
             <div class="flex items-center">
                 <nav>
                     <div>
-                        <button class="block lg:hidden">Button</button>
+                        <button class="block lg:hidden"><span>☰</span></button>
                     </div>
                     <div class="hidden lg:block">
                         <a href="">Accueil</a>
