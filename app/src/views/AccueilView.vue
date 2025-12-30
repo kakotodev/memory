@@ -1,5 +1,7 @@
 <script setup>  
 
+import { RouterLink } from 'vue-router';
+
 </script>
 
 <template>
@@ -11,8 +13,8 @@
             </div>
             <div class="place-items-center py-8">
                 <nav>
-                    <a href="">Jouer au jeux</a>
-                    <a href="">Regles du jeux</a>
+                    <router-link to="/play">Jouer au jeux</router-link>
+                    <router-link to="/rules">Regles du jeux</router-link>
                 </nav>
             </div>
         </div>
