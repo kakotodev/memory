@@ -22,9 +22,21 @@
     .sectionRegle {
         margin-bottom: 50px;
         margin-top: 50px;
+
+        @media (max-width: 1024px){
+            margin-bottom: 20px;
+            margin-top: 20px;            
+        }
+
     }
 
     h1 {
         margin-bottom: 50px;
+
+        @media (max-width: 1024px){
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;   
+        }
     }
 </style>

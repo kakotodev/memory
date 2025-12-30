@@ -12,6 +12,12 @@ main {
   align-items: center;
 
   min-height: 900px;
+
+  @media (max-width: 1024px){
+        min-height: 300px;
+
+        margin-top: 75px;
+  }
 }
 
 h1 {

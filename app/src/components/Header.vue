@@ -40,6 +40,10 @@ const ActiverMenuBurger = () => {
 
 <style scoped>
 
+    header {
+        z-index: 9999;
+    }
+
     @media (min-width: 1024px){
         a {
             margin: 25px;
