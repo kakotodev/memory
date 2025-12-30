@@ -5,7 +5,7 @@
 <template>
     <footer class="flex justify-center border-2">
         <div>
-            <div class="items-center">
+            <div class="place-items-center">
                 <h2>©Lam & Michel</h2>
                 <h2>MIT Liscense</h2>
             </div>
