@@ -6,11 +6,19 @@ body {
   color: black;
 }
 
+main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  min-height: 900px;
+}
+
 h1 {
   font-size: 56px;
 
-  @media (max-width: 1024px){
-      font-size: 32px;
+  @media (max-width: 1024px) {
+    font-size: 32px;
   }
 
 }

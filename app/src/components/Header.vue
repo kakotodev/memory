@@ -8,6 +8,7 @@ const ActiverMenuBurger = () => {
     MenuBurger.value = !MenuBurger.value
 }
 
+
 </script>
 
 <template>
@@ -19,7 +20,7 @@ const ActiverMenuBurger = () => {
             <div class="flex items-center">
                 <nav>
                     <div>
-                        <button class="block lg:hidden">Button</button>
+                        <button @click="ActiverMenuBurger" class="block lg:hidden"><span>☰</span></button>
                     </div>
                     <div class="hidden lg:block">
                         <a href="">Accueil</a>
@@ -28,13 +29,20 @@ const ActiverMenuBurger = () => {
                 </nav>
             </div>
         </div>
+        <div v-if="MenuBurger" class="flex items-center top-14 absolute lg:hidden">
+            <nav class="flex flex-col">
+                <a href="">Accueil</a>
+                <a href="">Leaderboard</a>
+            </nav>
+        </div>
     </header>
 </template>
 
 <style scoped>
 
     @media (min-width: 1024px){
-
+        a {
+            margin: 25px;
+        }
     }
 </style>
-
