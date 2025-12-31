@@ -37,3 +37,7 @@ nav a {
 a:hover {
   color: green;
 }
+
+button:hover {
+  color: red;
+}
