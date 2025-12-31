@@ -12,15 +12,12 @@ main {
   align-items: center;
 
   min-height: 900px;
-<<<<<<< HEAD
-=======
 
-  @media (max-width: 1024px){
-        min-height: 450px;
+  @media (max-width: 1024px) {
+    min-height: 450px;
 
-        margin-top: 75px;
+    margin-top: 75px;
   }
->>>>>>> post-prod
 }
 
 h1 {
