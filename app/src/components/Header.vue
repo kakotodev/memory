@@ -2,6 +2,8 @@
 
 import { ref } from 'vue';
 
+import headerNav from './headerNav.vue';
+
 const MenuBurger = ref(false);
 
 const ActiverMenuBurger = () => {
@@ -23,22 +25,24 @@ const ActiverMenuBurger = () => {
                         <button @click="ActiverMenuBurger" class="block lg:hidden"><span>☰</span></button>
                     </div>
                     <div class="hidden lg:block">
-                        <a href="">Accueil</a>
-                        <a href="">Leaderboard</a>
+                        <headerNav />
                     </div>
                 </nav>
             </div>
         </div>
         <div v-if="MenuBurger" class="flex items-center top-14 absolute lg:hidden">
             <nav class="flex flex-col">
-                <a href="">Accueil</a>
-                <a href="">Leaderboard</a>
+                <headerNav />
             </nav>
         </div>
     </header>
 </template>
 
 <style scoped>
+
+    header {
+        z-index: 9999;
+    }
 
     @media (min-width: 1024px){
         a {

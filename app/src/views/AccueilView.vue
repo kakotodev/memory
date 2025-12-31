@@ -1,9 +1,26 @@
 <script setup>  
 
-import Header from '@/components/Header.vue';
+import { RouterLink } from 'vue-router';
 
 </script>
 
 <template>
-    <Header />
+    <main>
+        <div class="pb-24">
+            <div class="place-items-center">
+                <h1>JOUER A MEMORY</h1>
+                <h3>êtes-vous prête a relevez le défi ?</h3>
+            </div>
+            <div class="place-items-center py-8">
+                <nav>
+                    <router-link to="/play">Jouer au jeux</router-link>
+                    <router-link to="/rules">Regles du jeux</router-link>
+                </nav>
+            </div>
+        </div>
+    </main>
 </template>
+
+<style scoped>
+    
+</style>
