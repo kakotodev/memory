@@ -26,6 +26,11 @@ const router = createRouter({
       path: '/play',
       name: 'play',
       component: GameModeView
+    },
+    {
+      path: '/selection-niveau',
+      name: 'selection-niveau',
+      component: () => import('../views/SelectionNiveauView.vue')
     }
   ],
 })
