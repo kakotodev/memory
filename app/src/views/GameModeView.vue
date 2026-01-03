@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 
 import SelectedMode from '@/components/SelectedMode.vue';
+import SelectedClassique from '@/components/SelectedClassique.vue';
 
 const choix = ref(null)
 
@@ -16,7 +17,7 @@ const updateMode = (modeSelectionner) => {
     <main>
         <div id="SectionGame" class="pb-66">
             <SelectedMode v-if="choix === null" @select-mode="updateMode($event)"/>
-            
+            <SelectedClassique v-else-if="choix === 'Classique'" @select-mode="updateMode($event)" />
         </div>
     </main>
 </template>
