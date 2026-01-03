@@ -3,6 +3,10 @@ import { defineEmits } from 'vue';
 
 defineEmits(['select-mode'])
 
+function AlertButton() {
+    console.log("Un mode de jeux a été selectioné")
+}
+
 </script>
 
 <template>
@@ -10,8 +14,8 @@ defineEmits(['select-mode'])
         <h1>Sélectionner un mode de jeux</h1>
     </div>
     <div class="place-items-center">
-        <button @click="$emit('select-mode','Classique')">Classique</button>
-        <button @click="$emit('select-mode', 'Survie')">Survie</button>
+        <button @click="$emit('select-mode','Classique'); AlertButton()">Classique</button>
+        <button @click="$emit('select-mode', 'Survie'); AlertButton()">Survie</button>
     </div>
 </template>
 

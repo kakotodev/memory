@@ -3,10 +3,11 @@ import { ref } from 'vue';
 
 import SelectedMode from '@/components/SelectedMode.vue';
 
-const SelectedMode = ref(null)
+const choix = ref(null)
 
 const updateMode = (modeSelectionner) => {
-    SelectedMode.value = modeSelectionner
+    choix.value = modeSelectionner
+    console.log(choix.value)
 }
 
 </script>
@@ -14,7 +15,8 @@ const updateMode = (modeSelectionner) => {
 <template>
     <main>
         <div id="SectionGame" class="pb-66">
-            <SelectedMode v-if="SelectedMode === null" />
+            <SelectedMode v-if="choix === null" @select-mode="updateMode($event)"/>
+            
         </div>
     </main>
 </template>
