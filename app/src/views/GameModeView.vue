@@ -1,41 +1,33 @@
 <script setup>
-import { RouterLink } from 'vue-router';
+import { ref } from 'vue';
+
+import SelectedMode from '@/components/SelectedMode.vue';
+import SelectedClassique from '@/components/SelectedClassique.vue';
+import SelectedEasy from '@/components/SelectedEasy.vue';
+
+const choix = ref(null)
+
+const updateMode = (modeSelectionner) => {
+    choix.value = modeSelectionner
+    console.log(choix.value)
+}
+
 </script>
 
 <template>
     <main>
-        <div class="pb-66">
-            <div class="place-items-center">
-                <h1>Sélectionner un </h1>
-                <h1 style="padding-left: 3rem;">mode de jeux</h1>
-            </div>
-            
-            <div class="place-items-center py-8">
-                <nav class="flex flex-col space-y-6 place-items-center">
-                    <router-link to="/selection-niveau" class="btn">
-                        Classique
-                    </router-link>
-                    
-                    <router-link to="/selection-niveau" class="btn">
-                        Survie
-                    </router-link>
-                    
-                    <router-link to="/" class="btn" >
-                        Quitter
-                    </router-link>
-                </nav>
-            </div>
-        </div>
+        <div id="SectionGame" class="pb-66">
+            <SelectedMode v-if="choix === null" @select-mode="updateMode($event)"/>
+            <SelectedClassique v-else-if="choix === 'Classique'" @select-mode="updateMode($event)" />
+            <SelectedEasy v-else-if="choix === 'easy'" @select-mode="updateMode($event)" />        </div>
     </main>
 </template>
 
 <style scoped>
-    .btn {
-        padding: 1rem;
-        background-color: white;
-        color: black;
-        border: 1px solid black;
-        width: 16rem;
-        text-align: center;
+
+    #SectionGame {
+        border: solid;
+        width: 1800px;
+        height: 800px;
     }
 </style>
