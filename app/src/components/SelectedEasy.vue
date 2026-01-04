@@ -6,23 +6,19 @@
     const card = ref([])
     const flippedCards = ref([])
     
-    // Stats
     const timer = ref(0)
     const attempts = ref(0)
     let intervalId = null
 
     const setupGame = () => {
-        // Reset stats
         timer.value = 0
         attempts.value = 0
         clearInterval(intervalId)
         startTimer()
 
         const symbols = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
-        // Create pairs and flatten
         const deck = [...symbols, ...symbols];
 
-        // Shuffle and map to card objects
         card.value = deck
             .sort(() => Math.random() - 0.5)
             .map((val, index) => ({
@@ -50,7 +46,6 @@
     }
 
     const flipCard = (selectedCard) => {
-        // Prevent clicking if already flipped, matched, or if 2 cards are already flipped
         if (selectedCard.isFlipped || selectedCard.isMatched || flippedCards.value.length === 2) {
             return 
         }
@@ -59,7 +54,7 @@
         flippedCards.value.push(selectedCard)
 
         if (flippedCards.value.length === 2) {
-            attempts.value++ // Increment attempts
+            attempts.value++ 
             checkMatch()
         }
     }
@@ -72,7 +67,6 @@
             card2.isMatched = true
             flippedCards.value = []
 
-            // Check for Win Condition
             if (card.value.every(c => c.isMatched)) {
                 stopTimer()
                 const score = { time: timer.value, attempts: attempts.value }
@@ -96,9 +90,7 @@
 
 <template>
     <div class="flex flex-col items-center justify-center min-h-[50vh] p-4">
-        <h2 class="text-3xl font-bold mb-4 text-white">Mode : Facile</h2>
-        
-        <!-- Stats Bar -->
+        <h2 class="text-3xl font-bold mb-4 text-white">Mode : Facile</h2>        
         <div class="flex gap-8 mb-6 bg-white px-8 py-3 rounded-full text-gray-900 shadow-lg border border-gray-200">
             <div class="flex flex-col items-center">
                 <span class="text-xs uppercase tracking-wider text-gray-500">Temps</span>
@@ -110,7 +102,6 @@
                 <span class="text-2xl font-mono font-bold">{{ attempts }}</span>
             </div>
         </div>
-
         <div class="grid grid-cols-4 gap-4 p-4">
             <div 
                 v-for="c in card" 
