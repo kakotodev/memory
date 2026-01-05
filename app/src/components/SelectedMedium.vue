@@ -16,17 +16,44 @@
         clearInterval(intervalId)
         startTimer()
 
-        const symbols = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
+        // 12 pairs (24 cards) + 1 block = 25 cells
+        const symbols = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L'];
         const deck = [...symbols, ...symbols];
 
-        card.value = deck
-            .sort(() => Math.random() - 0.5)
-            .map((val, index) => ({
-                id: index, 
-                value: val,
-                isFlipped: false,
-                isMatched: false
-            }));
+        const shuffledDeck = deck.sort(() => Math.random() - 0.5);
+
+        // Insert BLOCK at index 12 (center of 5x5 implies indices 0-24, center is 12)
+        // 0  1  2  3  4
+        // 5  6  7  8  9
+        // 10 11 12 13 14
+        // 15 16 17 18 19
+        // 20 21 22 23 24
+        
+        let grid = [];
+        let deckIndex = 0;
+
+        for (let i = 0; i < 25; i++) {
+            if (i === 12) {
+                grid.push({
+                    id: 'block',
+                    value: 'BLOCK',
+                    isFlipped: true, // Always visible or styled differently
+                    isMatched: true,  // Treated as matched so it doesn't affect logic
+                    isBlock: true
+                })
+            } else {
+                grid.push({
+                    id: i,
+                    value: shuffledDeck[deckIndex],
+                    isFlipped: false,
+                    isMatched: false,
+                    isBlock: false
+                })
+                deckIndex++;
+            }
+        }
+        
+        card.value = grid;
     }
 
     const startTimer = () => {
@@ -46,7 +73,7 @@
     }
 
     const flipCard = (selectedCard) => {
-        if (selectedCard.isFlipped || selectedCard.isMatched || flippedCards.value.length === 2) {
+        if (selectedCard.isBlock || selectedCard.isFlipped || selectedCard.isMatched || flippedCards.value.length === 2) {
             return 
         }
 
@@ -67,7 +94,8 @@
             card2.isMatched = true
             flippedCards.value = []
 
-            if (card.value.every(c => c.isMatched)) {
+            // Check if all non-block cards are matched
+            if (card.value.every(c => c.isMatched || c.isBlock)) {
                 stopTimer()
                 const score = { time: timer.value, attempts: attempts.value }
                 console.log("Game Won!", score)
@@ -90,7 +118,7 @@
 
 <template>
     <div class="flex flex-col items-center justify-center min-h-[50vh] p-4">
-        <h2 class="text-3xl font-bold mb-4 text-white">Mode : Facile</h2>
+        <h2 class="text-3xl font-bold mb-4 text-white">Mode : Moyen</h2>
         <div class="flex gap-8 mb-6 bg-white px-8 py-3 rounded-full text-gray-900 shadow-lg border border-gray-200">
             <div class="flex flex-col items-center">
                 <span class="text-xs uppercase tracking-wider text-gray-500">Temps</span>
@@ -103,14 +131,18 @@
             </div>
         </div>
 
-        <div class="grid grid-cols-4 gap-4 p-4">
+        <!-- Grid 5x5 -->
+        <div class="grid grid-cols-5 gap-4 p-4">
             <div 
                 v-for="c in card" 
                 :key="c.id" 
-                class="card-container cursor-pointer w-24 h-32"
+                class="card-container cursor-pointer w-32 h-24"
                 @click="flipCard(c)"
             >
-                <div class="card-inner w-full h-full relative transition-transform duration-500" :class="{ 'is-flipped': c.isFlipped || c.isMatched }">
+                <div v-if="c.isBlock" class="w-full h-full bg-transparent rounded-xl flex items-center justify-center">
+                    <!-- Empty block for center -->
+                </div>
+                <div v-else class="card-inner w-full h-full relative transition-transform duration-500" :class="{ 'is-flipped': c.isFlipped || c.isMatched }">
                     <div class="card-front absolute inset-0 bg-indigo-600 rounded-xl flex items-center justify-center shadow-lg backface-hidden border-2 border-indigo-400">
                         <span class="text-white text-4xl font-bold">?</span>
                     </div>
