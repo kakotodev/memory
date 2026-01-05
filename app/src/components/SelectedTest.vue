@@ -20,7 +20,7 @@
         clearInterval(intervalId)
         startTimer()
 
-        const symbols = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
+        const symbols = ['A'];
         const deck = [...symbols, ...symbols];
         card.value = deck
             .sort(() => Math.random() - 0.5)
@@ -92,7 +92,7 @@
             name: name.value,
             time: timer.value,
             attempts: attempts.value,
-            diff: 'Easy'
+            diff: 'Test'
         }
     }
 
