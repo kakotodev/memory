@@ -10,12 +10,14 @@ function AlertButton() {
 </script>
 
 <template>
-    <div class="place-items-center">
-        <h1>Sélectionner un mode de jeux</h1>
-    </div>
-    <div class="place-items-center">
-        <button @click="$emit('select-mode','Classique'); AlertButton()">Classique</button>
-        <button @click="$emit('select-mode', 'Survie'); AlertButton()">Survie</button>
+    <div>
+        <div class="place-items-center">
+            <h1>Sélectionner un mode de jeux</h1>
+        </div>
+        <div class="place-items-center">
+            <button @click="$emit('select-mode','Classique'); AlertButton()">Classique</button>
+            <button @click="$emit('select-mode', 'Survie'); AlertButton()">Survie</button>
+        </div>  
     </div>
 </template>
 
