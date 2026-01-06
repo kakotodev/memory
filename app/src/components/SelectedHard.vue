@@ -19,7 +19,6 @@
         clearInterval(intervalId)
         startTimer()
 
-        // 18 pairs (36 cards)
         const symbols = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R'];
         const deck = [...symbols, ...symbols];
 

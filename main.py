@@ -32,6 +32,7 @@ async def save_score(data: ScoreRecu):
         "total_scores": len(scores_database)
     }
 
-@app.get("/api/scores")
-async def get_all_scores():
-    return scores_database
+@app.get("/api/scores-easy")
+async def get_scores_easy(diff: str = "Easy"):
+    filtered = [s for s in scores_database if s.difficulty.lower() == level.lower()]
+    return filtered

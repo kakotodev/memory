@@ -94,6 +94,11 @@
             attempts: attempts.value,
             diff: 'Test'
         }
+
+        const existingScores = JSON.parse(localStorage.getItem('allScores')) || [];
+        existingScores.push(scoreData);
+        localStorage.setItem('allScores', JSON.stringify(existingScores));
+        
         try {
             const response = await fetch('http://127.0.0.1:8000/api/save-score', {
                 method: 'POST',

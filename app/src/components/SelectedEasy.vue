@@ -99,7 +99,7 @@
             const response = await fetch('http://127.0.0.1:8000/api/save-score', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(finalData)
+                body: JSON.stringify(scoreData)
             });
             if (response.ok) {
                 alert("Enregistré dans FastAPI !");
@@ -156,7 +156,7 @@
             Retour au menu
         </button>
     </div>
-    <div v-if="askName" class="flex flex-col items-center justify-center min-h-[50vh] p-4 bg-black/50">
+    <div v-if="askName" class="flex flex-col items-center justify-center min-h-[50vh] p-4 bg-black/50 h-full">
         <div class="absolute bg-white p-8 rounded-lg">
             <form @submit.prevent="saveFinaleScore">
                 <label for="name">Votre nom :</label>
