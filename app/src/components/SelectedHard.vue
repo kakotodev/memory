@@ -8,7 +8,10 @@
     
     const timer = ref(0)
     const attempts = ref(0)
+
     let intervalId = null
+
+    const askName = ref(false)
 
     const setupGame = () => {
         timer.value = 0
@@ -84,13 +87,35 @@
         }
     }
 
+    const saveFinaleScore = async () => {
+        const scoreData = {
+            name: name.value,
+            time: timer.value,
+            attempts: attempts.value,
+            diff: 'Hard'
+        }
+        try {
+            const response = await fetch('http://127.0.0.1:8000/api/save-score', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(scoreData)
+            });
+            if (response.ok) {
+                alert("Enregistré dans FastAPI !");
+                askName.value = false;
+        }
+        } catch (err) {
+                console.error("Erreur de connexion au backend", err); 
+            }
+    }
+
     onMounted(setupGame)
     onUnmounted(() => clearInterval(intervalId))
 
 </script>
 
 <template>
-    <div class="flex flex-col items-center justify-center min-h-[50vh] p-2">
+    <div v-if="!askName" class="flex flex-col items-center justify-center min-h-[50vh] p-2">
         <h2 class="text-3xl font-bold mb-2 text-white">Mode : Difficile</h2>
         <div class="flex gap-8 mb-4 bg-white px-8 py-2 rounded-full text-gray-900 shadow-lg border border-gray-200">
             <div class="flex flex-col items-center">
@@ -103,8 +128,6 @@
                 <span class="text-2xl font-mono font-bold">{{ attempts }}</span>
             </div>
         </div>
-
-        <!-- Grid 6x6 with smaller cards -->
         <div class="grid grid-cols-6 gap-3 p-2">
             <div 
                 v-for="c in card" 
@@ -130,6 +153,15 @@
         >
             Retour au menu
         </button>
+    </div>
+    <div v-if="askName" class="flex flex-col items-center justify-center min-h-[50vh] p-4 bg-black/50 h-full">
+        <div class="absolute bg-white p-8 rounded-lg">
+            <form @submit.prevent="saveFinaleScore">
+                <label for="name">Votre nom :</label>
+                <input type="text" name="name" v-model="name" required>
+                <button type="submit">Envoyer</button>
+            </form>
+        </div>
     </div>
 </template>
 

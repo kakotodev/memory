@@ -8,7 +8,10 @@
     
     const timer = ref(0)
     const attempts = ref(0)
+
     let intervalId = null
+
+    const askName = ref(false)
 
     const setupGame = () => {
         timer.value = 0
@@ -16,19 +19,11 @@
         clearInterval(intervalId)
         startTimer()
 
-        // 12 pairs (24 cards) + 1 block = 25 cells
         const symbols = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L'];
         const deck = [...symbols, ...symbols];
 
         const shuffledDeck = deck.sort(() => Math.random() - 0.5);
 
-        // Insert BLOCK at index 12 (center of 5x5 implies indices 0-24, center is 12)
-        // 0  1  2  3  4
-        // 5  6  7  8  9
-        // 10 11 12 13 14
-        // 15 16 17 18 19
-        // 20 21 22 23 24
-        
         let grid = [];
         let deckIndex = 0;
 
@@ -37,8 +32,8 @@
                 grid.push({
                     id: 'block',
                     value: 'BLOCK',
-                    isFlipped: true, // Always visible or styled differently
-                    isMatched: true,  // Treated as matched so it doesn't affect logic
+                    isFlipped: true, 
+                    isMatched: true, 
                     isBlock: true
                 })
             } else {
@@ -94,7 +89,6 @@
             card2.isMatched = true
             flippedCards.value = []
 
-            // Check if all non-block cards are matched
             if (card.value.every(c => c.isMatched || c.isBlock)) {
                 stopTimer()
                 const score = { time: timer.value, attempts: attempts.value }
@@ -111,13 +105,35 @@
         }
     }
 
+    const saveFinaleScore = async () => {
+        const scoreData = {
+            name: name.value,
+            time: timer.value,
+            attempts: attempts.value,
+            diff: 'Medium'
+        }
+        try {
+            const response = await fetch('http://127.0.0.1:8000/api/save-score', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(scoreData)
+            });
+            if (response.ok) {
+                alert("Enregistré dans FastAPI !");
+                askName.value = false;
+        }
+        } catch (err) {
+                console.error("Erreur de connexion au backend", err); 
+            }
+    }
+
     onMounted(setupGame)
     onUnmounted(() => clearInterval(intervalId))
 
 </script>
 
 <template>
-    <div class="flex flex-col items-center justify-center min-h-[50vh] p-4">
+    <div v-if="!askName" class="flex flex-col items-center justify-center min-h-[50vh] p-4">
         <h2 class="text-3xl font-bold mb-4 text-white">Mode : Moyen</h2>
         <div class="flex gap-8 mb-6 bg-white px-8 py-3 rounded-full text-gray-900 shadow-lg border border-gray-200">
             <div class="flex flex-col items-center">
@@ -130,8 +146,6 @@
                 <span class="text-2xl font-mono font-bold">{{ attempts }}</span>
             </div>
         </div>
-
-        <!-- Grid 5x5 -->
         <div class="grid grid-cols-5 gap-4 p-4">
             <div 
                 v-for="c in card" 
@@ -140,7 +154,6 @@
                 @click="flipCard(c)"
             >
                 <div v-if="c.isBlock" class="w-full h-full bg-transparent rounded-xl flex items-center justify-center">
-                    <!-- Empty block for center -->
                 </div>
                 <div v-else class="card-inner w-full h-full relative transition-transform duration-500" :class="{ 'is-flipped': c.isFlipped || c.isMatched }">
                     <div class="card-front absolute inset-0 bg-indigo-600 rounded-xl flex items-center justify-center shadow-lg backface-hidden border-2 border-indigo-400">
@@ -160,6 +173,15 @@
         >
             Retour au menu
         </button>
+    </div>
+    <div v-if="askName" class="flex flex-col items-center justify-center min-h-[50vh] p-4 bg-black/50 h-full">
+        <div class="absolute bg-white p-8 rounded-lg">
+            <form @submit.prevent="saveFinaleScore">
+                <label for="name">Votre nom :</label>
+                <input type="text" name="name" v-model="name" required>
+                <button type="submit">Envoyer</button>
+            </form>
+        </div>
     </div>
 </template>
 

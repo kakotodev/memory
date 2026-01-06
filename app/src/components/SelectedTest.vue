@@ -155,7 +155,7 @@
             Retour au menu
         </button>
     </div>
-    <div v-if="askName" class="flex flex-col items-center justify-center min-h-[50vh] p-4 bg-black/50">
+    <div v-if="askName" class="flex flex-col items-center justify-center min-h-[50vh] p-4 bg-black/50 h-full">
         <div class="absolute bg-white p-8 rounded-lg">
             <form @submit.prevent="saveFinaleScore">
                 <label for="name">Votre nom :</label>
