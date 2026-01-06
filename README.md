@@ -42,9 +42,8 @@ MEMORY/
     ```
 2. Pour FastAPI (à la racine) : 
     ```
-    cd fastapi
-    python -m venv venv
-    pip install -r requirements.txt
+    .\venv\Scripts\activate
+    pip install fastapi uvicorn
     uvicorn main:app --reload
     ```
 
