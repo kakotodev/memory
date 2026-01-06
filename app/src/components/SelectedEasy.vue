@@ -94,7 +94,21 @@
             attempts: attempts.value,
             diff: 'Easy'
         }
-    }
+
+        try {
+            const response = await fetch('http://127.0.0.1:8000/api/save-score', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(finalData)
+            });
+            if (response.ok) {
+                alert("Enregistré dans FastAPI !");
+                askName.value = false;
+        }
+        } catch (err) {
+                console.error("Erreur de connexion au backend", err); 
+            }
+    };
 
     onMounted(setupGame)
     onUnmounted(() => clearInterval(intervalId))
