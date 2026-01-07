@@ -11,7 +11,7 @@
     const timer = ref(0)
     const attempts = ref(0)
 
-    let intervalId = null
+    let intervalId = null // chronometre
 
     const askName = ref(false)
     
