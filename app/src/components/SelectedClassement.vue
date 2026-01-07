@@ -60,7 +60,7 @@
 
 <template>
     <div class="mt-4">
-        <h2 class="text-xl font-bold">Tableau des scores</h2>
+        <h2 class="text-xl font-bold">Tableau des scores locales</h2>
         <button @click="deleteScoreAll()">Reset</button>
         <button @click="toggleSortByTime()">Trie par temps</button>
         <button @click="toggleSortByAttempts()">Trier par attempts</button>

@@ -58,6 +58,7 @@
                     </nav>
                 </div>
             </div>
+            <h1>Classement globales</h1>
             <div id="SectionLb" class="flex">
                 <div class="lb">
                     <h2>Classement Easy</h2>
