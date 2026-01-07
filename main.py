@@ -45,11 +45,11 @@ async def get_easy_scores():
 @app.get("/api/scores/medium")
 async def get_medium_scores():  
     medium_scores = [score for score in scores_database if score.diff == "Medium"]
-    sorted_scores_medium = sorted(easy_scores, key=lambda x: float(x.time))
+    sorted_scores_medium = sorted(medium_scores, key=lambda x: float(x.time))
     return sorted_scores_medium
 
 @app.get("/api/scores/hard")
 async def get_hard_scores():
     hard_scores = [score for score in scores_database if score.diff == "Hard"]
-    sorted_scores_hard = sorted(easy_scores, key=lambda x: float(x.time))
+    sorted_scores_hard = sorted(hard_scores, key=lambda x: float(x.time))
     return sorted_scores_hard
