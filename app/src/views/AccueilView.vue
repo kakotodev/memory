@@ -13,8 +13,8 @@ import { RouterLink } from 'vue-router';
             </div>
             <div class="place-items-center py-8">
                 <nav>
-                    <router-link to="/play">Jouer au jeux</router-link>
-                    <router-link to="/rules">Regles du jeux</router-link>
+                    <router-link to="/play">Jouer au jeu</router-link>
+                    <router-link to="/rules">Regles du jeu</router-link>
                 </nav>
             </div>
         </div>
