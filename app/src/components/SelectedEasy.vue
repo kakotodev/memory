@@ -13,6 +13,9 @@
     let intervalId = null
 
     const askName = ref(false)
+    
+    const images = import.meta.glob('@/assets/cards/*.webp', { eager: true, as: 'url' })
+    const allImages = Object.values(images)
 
     const setupGame = () => {
         timer.value = 0
@@ -20,13 +23,15 @@
         clearInterval(intervalId)
         startTimer()
 
-        const symbols = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
-        const deck = [...symbols, ...symbols];
+        const MelangeImages = allImages.sort(() => 0.5 - Math.random())
+        const selectedImages = MelangeImages.slice(0, 8)
+        const deck = [...selectedImages, ...selectedImages];
+
         card.value = deck
             .sort(() => Math.random() - 0.5)
-            .map((val, index) => ({ // Mettre des propriétés à chaque valeur
+            .map((imgUrl, index) => ({
                 id: index, 
-                value: val,
+                value: imgUrl,
                 isFlipped: false,
                 isMatched: false
             }));
@@ -94,7 +99,25 @@
             attempts: attempts.value,
             diff: 'Easy'
         }
-    }
+        
+        const existingScores = JSON.parse(localStorage.getItem('allScores')) || [];
+        existingScores.push(scoreData);
+        localStorage.setItem('allScores', JSON.stringify(existingScores));
+
+        try {
+            const response = await fetch('http://127.0.0.1:8000/api/save-score', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(scoreData)
+            });
+            if (response.ok) {
+                alert("Enregistré dans FastAPI !");
+                askName.value = false;
+        }
+        } catch (err) {
+                console.error("Erreur de connexion au backend", err); 
+            }
+    };
 
     onMounted(setupGame)
     onUnmounted(() => clearInterval(intervalId))
@@ -128,8 +151,8 @@
                         <span class="text-white text-4xl font-bold">?</span>
                     </div>
 
-                    <div class="card-back absolute inset-0 bg-white rounded-xl flex items-center justify-center shadow-lg backface-hidden rotate-y-180 border-2 border-indigo-600">
-                        <span class="text-4xl font-bold text-indigo-800">{{ c.value }}</span>
+                    <div class="card-back absolute inset-0 bg-white rounded-xl flex items-center justify-center shadow-lg backface-hidden rotate-y-180 border-2 border-indigo-600 overflow-hidden">
+                        <img :src="c.value" alt="Card Image" class="w-full h-full object-contain p-2" />
                     </div>
                 </div>
             </div>
@@ -142,7 +165,7 @@
             Retour au menu
         </button>
     </div>
-    <div v-if="askName" class="flex flex-col items-center justify-center min-h-[50vh] p-4 bg-black/50">
+    <div v-if="askName" class="flex flex-col items-center justify-center min-h-[50vh] p-4 bg-black/50 h-full">
         <div class="absolute bg-white p-8 rounded-lg">
             <form @submit.prevent="saveFinaleScore">
                 <label for="name">Votre nom :</label>

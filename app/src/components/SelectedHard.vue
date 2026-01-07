@@ -5,10 +5,17 @@
 
     const card = ref([])
     const flippedCards = ref([])
-    
+
+    const name = ref('')
     const timer = ref(0)
     const attempts = ref(0)
+
     let intervalId = null
+
+    const askName = ref(false)
+
+    const images = import.meta.glob('@/assets/cards/*.webp', { eager: true, as: 'url' })
+    const allImages = Object.values(images)
 
     const setupGame = () => {
         timer.value = 0
@@ -16,20 +23,19 @@
         clearInterval(intervalId)
         startTimer()
 
-        // 18 pairs (36 cards)
-        const symbols = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R'];
-        const deck = [...symbols, ...symbols];
+        const MelangeImages = allImages.sort(() => 0.5 - Math.random())
+        const selectedImages = MelangeImages.slice(0, 18)
+        const deck = [...selectedImages, ...selectedImages];
 
-        const shuffledDeck = deck.sort(() => Math.random() - 0.5);
-
-        card.value = shuffledDeck.map((val, index) => ({
-            id: index, 
-            value: val,
-            isFlipped: false,
-            isMatched: false
-        }));
+        card.value = deck
+            .sort(() => Math.random() - 0.5)
+            .map((imgUrl, index) => ({
+                id: index, 
+                value: imgUrl,
+                isFlipped: false,
+                isMatched: false
+            }));
     }
-
     const startTimer = () => {
         intervalId = setInterval(() => {
             timer.value++
@@ -68,9 +74,10 @@
             card2.isMatched = true
             flippedCards.value = []
 
-            if (card.value.every(c => c.isMatched)) {
+            if (card.value.every(carteIndiviuelle => carteIndiviuelle.isMatched)) {
                 stopTimer()
                 const score = { time: timer.value, attempts: attempts.value }
+                askName.value = true
                 console.log("Game Won!", score)
                 emit('game-win', score)
             }
@@ -84,13 +91,40 @@
         }
     }
 
+    const saveFinaleScore = async () => {
+        const scoreData = {
+            name: name.value,
+            time: timer.value,
+            attempts: attempts.value,
+            diff: 'Hard'
+        }
+
+        const existingScores = JSON.parse(localStorage.getItem('allScores')) || [];
+        existingScores.push(scoreData);
+        localStorage.setItem('allScores', JSON.stringify(existingScores));
+        
+        try {
+            const response = await fetch('http://127.0.0.1:8000/api/save-score', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(scoreData)
+            });
+            if (response.ok) {
+                alert("Enregistré dans FastAPI !");
+                askName.value = false;
+        }
+        } catch (err) {
+                console.error("Erreur de connexion au backend", err); 
+            }
+    }
+
     onMounted(setupGame)
     onUnmounted(() => clearInterval(intervalId))
 
 </script>
 
 <template>
-    <div class="flex flex-col items-center justify-center min-h-[50vh] p-2">
+    <div v-if="!askName" class="flex flex-col items-center justify-center min-h-[50vh] p-2">
         <h2 class="text-3xl font-bold mb-2 text-white">Mode : Difficile</h2>
         <div class="flex gap-8 mb-4 bg-white px-8 py-2 rounded-full text-gray-900 shadow-lg border border-gray-200">
             <div class="flex flex-col items-center">
@@ -103,8 +137,6 @@
                 <span class="text-2xl font-mono font-bold">{{ attempts }}</span>
             </div>
         </div>
-
-        <!-- Grid 6x6 with smaller cards -->
         <div class="grid grid-cols-6 gap-3 p-2">
             <div 
                 v-for="c in card" 
@@ -117,8 +149,8 @@
                         <span class="text-white text-3xl font-bold">?</span>
                     </div>
 
-                    <div class="card-back absolute inset-0 bg-white rounded-lg flex items-center justify-center shadow-lg backface-hidden rotate-y-180 border-2 border-indigo-600">
-                        <span class="text-2xl font-bold text-indigo-800">{{ c.value }}</span>
+                    <div class="card-back absolute inset-0 bg-white rounded-xl flex items-center justify-center shadow-lg backface-hidden rotate-y-180 border-2 border-indigo-600 overflow-hidden">
+                        <img :src="c.value" alt="Card Image" class="w-full h-full object-contain p-2" />
                     </div>
                 </div>
             </div>
@@ -130,6 +162,15 @@
         >
             Retour au menu
         </button>
+    </div>
+    <div v-if="askName" class="flex flex-col items-center justify-center min-h-[50vh] p-4 bg-black/50 h-full">
+        <div class="absolute bg-white p-8 rounded-lg">
+            <form @submit.prevent="saveFinaleScore">
+                <label for="name">Votre nom :</label>
+                <input type="text" name="name" v-model="name" required>
+                <button type="submit">Envoyer</button>
+            </form>
+        </div>
     </div>
 </template>
 

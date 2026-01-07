@@ -16,7 +16,7 @@ function AlertButton() {
         </div>
         <div class="place-items-center">
             <button @click="$emit('select-mode','Classique'); AlertButton()">Classique</button>
-            <button @click="$emit('select-mode', 'Survie'); AlertButton()">Survie</button>
+            <button @click="$emit('select-mode', 'Classement'); AlertButton()">Classement</button>
         </div>  
     </div>
 </template>
