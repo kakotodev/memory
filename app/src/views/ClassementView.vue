@@ -1,5 +1,6 @@
 <script setup>
     import { ref, onMounted } from 'vue';
+    const apiBaseUrl = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000';
 
     const ScoresEasy = ref([]);
     const ScoresMedium = ref([]);
@@ -7,7 +8,7 @@
 
     const loadScoreEasy = async (diff) => {
         try {
-            const response = await fetch(`http://127.0.0.1:8000/api/scores/easy`);
+            const response = await fetch(`${apiBaseUrl}/api/scores/easy`);
             if (response.ok) {
             ScoresEasy.value = await response.json();
             }
@@ -18,7 +19,7 @@
 
     const loadScoreMedium = async (diff) => {
         try {
-            const response = await fetch(`http://127.0.0.1:8000/api/scores/medium`);
+            const response = await fetch(`${apiBaseUrl}/api/scores/medium`);
             if (response.ok) {
             ScoresMedium.value = await response.json();
             }
@@ -29,7 +30,7 @@
 
     const loadScoreHard = async (diff) => {
         try {
-            const response = await fetch(`http://127.0.0.1:8000/api/scores/hard`);
+            const response = await fetch(`${apiBaseUrl}/api/scores/hard`);
             if (response.ok) {
             ScoresHard.value = await response.json();
             }
