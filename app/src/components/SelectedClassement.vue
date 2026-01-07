@@ -67,10 +67,27 @@
         <ul>
             <li v-for="(s, index) in leaderboard" :key="index" class="border-b py-1">
             {{ index + 1 }}. {{ s.name }} - {{ s.attempts }} attempts - essais ({{ s.time }}s) - difficulté : {{ s.diff }}
-            <button @click="deleteScoreByIndex(index)">X</button>
+            <button @click="deleteScoreByIndex(index)">Supprimer</button>
             <input type="text" v-model="s.name" @keyup.enter="changeName" placeholder="Modifier" />
             <button @click="changeName">Valider</button>
             </li>
         </ul>
     </div>
 </template>
+
+<style>
+    button {
+        margin-right: 8px;
+        margin-top: 8px;
+        padding: 4px 8px;
+        background-color: #4A90E2;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background-color: #357ABD;
+    }
+</style>

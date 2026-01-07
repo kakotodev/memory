@@ -7,12 +7,12 @@
         <div class="pb-128">
             <h1>Les règles du jeux</h1>
             <div class="sectionRegle">
-                <h3>Categorie 1</h3>
-                <div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae, molestias rerum. Aspernatur error porro numquam pariatur, veniam quis animi inventore possimus facilis laborum consequatur ex beatae expedita recusandae assumenda quam?</div>
+                <h3>Regle</h3>
+                <div>Le but du jeu est de retrouver toutes les paires de cartes identiques. Retournez deux cartes à la fois pour essayer de trouver une correspondance.</div>
             </div>
             <div class="sectionRegle">
-                <h3>Categorie 1</h3>
-                <div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae, molestias rerum. Aspernatur error porro numquam pariatur, veniam quis animi inventore possimus facilis laborum consequatur ex beatae expedita recusandae assumenda quam?</div>
+                <h3>Objectif</h3>
+                <div>Réussir le plus vite possible</div>
             </div>
         </div>
     </main>
