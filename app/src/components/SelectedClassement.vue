@@ -32,7 +32,7 @@
         <button @click="deleteScoreAll()">Reset</button>
         <ul>
             <li v-for="(s, index) in leaderboard" :key="index" class="border-b py-1">
-            {{ index + 1 }}. {{ s.name }} - {{ s.attempts }} - essais ({{ s.time }}s)
+            {{ index + 1 }}. {{ s.name }} - {{ s.attempts }} - essais ({{ s.time }}s) - difficulté : {{ s.diff }}
             <button @click="deleteScoreByIndex(index)">X</button>
             <input type="text" v-model="s.name" @keyup.enter="changeName" placeholder="Modifier" />
             <button @click="changeName">Valider</button>
