@@ -26,7 +26,7 @@ const router = createRouter({
       path: '/play',
       name: 'play',
       component: GameModeView
-    }
+    },
   ],
 })
 
