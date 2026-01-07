@@ -5,7 +5,8 @@
 
     const card = ref([])
     const flippedCards = ref([])
-    
+
+    const name = ref('')
     const timer = ref(0)
     const attempts = ref(0)
 
@@ -13,25 +14,28 @@
 
     const askName = ref(false)
 
+    const images = import.meta.glob('@/assets/cards/*.webp', { eager: true, as: 'url' })
+    const allImages = Object.values(images)
+
     const setupGame = () => {
         timer.value = 0
         attempts.value = 0
         clearInterval(intervalId)
         startTimer()
 
-        const symbols = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R'];
-        const deck = [...symbols, ...symbols];
+        const MelangeImages = allImages.sort(() => 0.5 - Math.random())
+        const selectedImages = MelangeImages.slice(0, 18)
+        const deck = [...selectedImages, ...selectedImages];
 
-        const shuffledDeck = deck.sort(() => Math.random() - 0.5);
-
-        card.value = shuffledDeck.map((val, index) => ({
-            id: index, 
-            value: val,
-            isFlipped: false,
-            isMatched: false
-        }));
+        card.value = deck
+            .sort(() => Math.random() - 0.5)
+            .map((imgUrl, index) => ({
+                id: index, 
+                value: imgUrl,
+                isFlipped: false,
+                isMatched: false
+            }));
     }
-
     const startTimer = () => {
         intervalId = setInterval(() => {
             timer.value++
@@ -70,9 +74,10 @@
             card2.isMatched = true
             flippedCards.value = []
 
-            if (card.value.every(c => c.isMatched)) {
+            if (card.value.every(carteIndiviuelle => carteIndiviuelle.isMatched)) {
                 stopTimer()
                 const score = { time: timer.value, attempts: attempts.value }
+                askName.value = true
                 console.log("Game Won!", score)
                 emit('game-win', score)
             }
@@ -144,8 +149,8 @@
                         <span class="text-white text-3xl font-bold">?</span>
                     </div>
 
-                    <div class="card-back absolute inset-0 bg-white rounded-lg flex items-center justify-center shadow-lg backface-hidden rotate-y-180 border-2 border-indigo-600">
-                        <span class="text-2xl font-bold text-indigo-800">{{ c.value }}</span>
+                    <div class="card-back absolute inset-0 bg-white rounded-xl flex items-center justify-center shadow-lg backface-hidden rotate-y-180 border-2 border-indigo-600 overflow-hidden">
+                        <img :src="c.value" alt="Card Image" class="w-full h-full object-contain p-2" />
                     </div>
                 </div>
             </div>

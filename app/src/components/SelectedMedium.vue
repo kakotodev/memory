@@ -6,6 +6,7 @@
     const card = ref([])
     const flippedCards = ref([])
     
+    const name = ref('')
     const timer = ref(0)
     const attempts = ref(0)
 
@@ -13,16 +14,18 @@
 
     const askName = ref(false)
 
+    const images = import.meta.glob('@/assets/cards/*.webp', { eager: true, as: 'url' })
+    const allImages = Object.values(images)
+
     const setupGame = () => {
         timer.value = 0
         attempts.value = 0
         clearInterval(intervalId)
         startTimer()
 
-        const symbols = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L'];
-        const deck = [...symbols, ...symbols];
-
-        const shuffledDeck = deck.sort(() => Math.random() - 0.5);
+        const MelangeImages = allImages.sort(() => 0.5 - Math.random())
+        const selectedImages = MelangeImages.slice(0, 12)
+        const deck = [...selectedImages, ...selectedImages];
 
         let grid = [];
         let deckIndex = 0;
@@ -39,7 +42,7 @@
             } else {
                 grid.push({
                     id: i,
-                    value: shuffledDeck[deckIndex],
+                    value: deck[deckIndex],
                     isFlipped: false,
                     isMatched: false,
                     isBlock: false
@@ -89,9 +92,10 @@
             card2.isMatched = true
             flippedCards.value = []
 
-            if (card.value.every(c => c.isMatched || c.isBlock)) {
+            if (card.value.every(cardIndivididuelle => cardIndivididuelle.isMatched)) {
                 stopTimer()
                 const score = { time: timer.value, attempts: attempts.value }
+                askName.value = true
                 console.log("Game Won!", score)
                 emit('game-win', score)
             }
@@ -164,14 +168,12 @@
                     <div class="card-front absolute inset-0 bg-indigo-600 rounded-xl flex items-center justify-center shadow-lg backface-hidden border-2 border-indigo-400">
                         <span class="text-white text-4xl font-bold">?</span>
                     </div>
-
-                    <div class="card-back absolute inset-0 bg-white rounded-xl flex items-center justify-center shadow-lg backface-hidden rotate-y-180 border-2 border-indigo-600">
-                        <span class="text-4xl font-bold text-indigo-800">{{ c.value }}</span>
+                    <div class="card-back absolute inset-0 bg-white rounded-xl flex items-center justify-center shadow-lg backface-hidden rotate-y-180 border-2 border-indigo-600 overflow-hidden">
+                        <img :src="c.value" alt="Card Image" class="w-full h-full object-contain p-2" />
                     </div>
                 </div>
             </div>
         </div>
-        
         <button 
             @click="$emit('select-mode', null)" 
             class="mt-8 px-6 py-2 bg-white text-indigo-600 font-bold rounded-full hover:bg-indigo-50 transition-colors shadow-lg"
