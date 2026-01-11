@@ -23,6 +23,17 @@ function AlertButton() {
 </template>
 
 <style scoped>
+
+    div {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    h1 {
+        color: white;
+    }
     button {
         display: flex;
         

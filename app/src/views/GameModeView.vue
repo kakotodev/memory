@@ -18,8 +18,8 @@ const updateMode = (modeSelectionner) => {
 </script>
 
 <template>
-    <main>
-        <div id="SectionGame">
+    <main class="min-h-screen py-8 px-4 flex items-center justify-center bg-gray-50 dark:bg-gray-950">
+        <div id="SectionGame" class="w-full max-w-7xl min-h-[800px] bg-white dark:bg-gray-900 rounded-3xl shadow-2xl border border-gray-100 dark:border-gray-800 overflow-hidden relative">
             <SelectedMode v-if="choix === null" @select-mode="updateMode($event)"/>
             <SelectedClassique v-else-if="choix === 'Classique'" @select-mode="updateMode($event)" />
             <SelectedEasy v-else-if="choix === 'easy'" @select-mode="updateMode($event)" />

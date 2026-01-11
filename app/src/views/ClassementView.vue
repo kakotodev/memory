@@ -1,109 +1,59 @@
 <script setup>
-    import { ref, onMounted } from 'vue';
-    const apiBaseUrl = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000';
 
-    const ScoresEasy = ref([]);
-    const ScoresMedium = ref([]);
-    const ScoresHard = ref([]);
-
-    const loadScoreEasy = async (diff) => {
-        try {
-            const response = await fetch(`${apiBaseUrl}/api/scores/easy`);
-            if (response.ok) {
-            ScoresEasy.value = await response.json();
-            }
-        } catch (error) {
-            console.error("Erreur lors de la récupération des scores", error);
-        }
-    };
-
-    const loadScoreMedium = async (diff) => {
-        try {
-            const response = await fetch(`${apiBaseUrl}/api/scores/medium`);
-            if (response.ok) {
-            ScoresMedium.value = await response.json();
-            }
-        } catch (error) {
-            console.error("Erreur lors de la récupération des scores", error);
-        }
-    };
-
-    const loadScoreHard = async (diff) => {
-        try {
-            const response = await fetch(`${apiBaseUrl}/api/scores/hard`);
-            if (response.ok) {
-            ScoresHard.value = await response.json();
-            }
-        } catch (error) {
-            console.error("Erreur lors de la récupération des scores", error);
-        }
-    };
-
-    onMounted(() => {
-        loadScoreEasy('easy');
-        loadScoreMedium('medium');
-        loadScoreHard('hard');
-    });
 </script>
 
 <template>
-    <main>
-        <div>
-            <div class="place-items-center">
-                <h1>Classement</h1>
-                <h3>Voici les classement</h3>
-                <div class="place-items-center py-8">
-                    <nav>
-                        <router-link to="/play">Jouer au jeux</router-link>
-                        <router-link to="/rules">Regles du jeux</router-link>
-                    </nav>
+    <main class="min-h-screen py-16 px-4 bg-gray-50 dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h1 class="text-4xl md:text-5xl font-bold mb-4 text-gray-900 dark:text-white">Classement</h1>
+                <h3 class="text-xl text-gray-600 dark:text-gray-400">Découvrez les meilleurs joueurs</h3>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Leaderboard Columns -->
+                <div class="bg-white dark:bg-gray-800 rounded-3xl shadow-lg border border-gray-100 dark:border-gray-700 min-h-[500px] p-8 flex flex-col relative overflow-hidden group hover:shadow-xl transition-shadow">
+                    <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-yellow-400 to-orange-500"></div>
+                    <h2 class="text-2xl font-bold mb-6 text-gray-800 dark:text-white flex items-center gap-2">
+                        <span>🥇</span> Facile
+                    </h2>
+                    <div class="flex-grow flex items-center justify-center text-gray-400 italic">
+                        Aucun score enregistré
+                    </div>
+                </div>
+                
+                <div class="bg-white dark:bg-gray-800 rounded-3xl shadow-lg border border-gray-100 dark:border-gray-700 min-h-[500px] p-8 flex flex-col relative overflow-hidden group hover:shadow-xl transition-shadow">
+                    <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-blue-400 to-indigo-500"></div>
+                    <h2 class="text-2xl font-bold mb-6 text-gray-800 dark:text-white flex items-center gap-2">
+                        <span>🥈</span> Moyen
+                    </h2>
+                    <div class="flex-grow flex items-center justify-center text-gray-400 italic">
+                        Aucun score enregistré
+                    </div>
+                </div>
+
+                <div class="bg-white dark:bg-gray-800 rounded-3xl shadow-lg border border-gray-100 dark:border-gray-700 min-h-[500px] p-8 flex flex-col relative overflow-hidden group hover:shadow-xl transition-shadow">
+                     <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-red-400 to-pink-500"></div>
+                    <h2 class="text-2xl font-bold mb-6 text-gray-800 dark:text-white flex items-center gap-2">
+                        <span>🥉</span> Difficile
+                    </h2>
+                    <div class="flex-grow flex items-center justify-center text-gray-400 italic">
+                        Aucun score enregistré
+                    </div>
                 </div>
             </div>
-            <h1>Classement globales</h1>
-            <div id="SectionLb" class="flex">
-                <div class="lb">
-                    <h2>Classement Easy</h2>
-                    <ul>
-                        <li v-for="score in ScoresEasy" :key="score.id">
-                            {{ score.name }} - Temps: {{ score.time }}s - Tentatives: {{ score.attempts }}
-                        </li>
-                    </ul>
-                </div>
-                <div class="lb">
-                    <h2>Classement Medium</h2>
-                    <ul>
-                        <li v-for="score in ScoresMedium" :key="score.id">
-                            {{ score.name }} - Temps: {{ score.time }}s - Tentatives: {{ score.attempts }}
-                        </li>
-                    </ul>
-                </div>
-                <div class="lb">
-                    <h2>Classement Hard</h2>
-                    <ul>
-                        <li v-for="score in ScoresHard" :key="score.id">
-                            {{ score.name }} - Temps: {{ score.time }}s - Tentatives: {{ score.attempts }}
-                        </li>
-                    </ul>
-                </div>
+            
+             <div class="mt-16 text-center">
+                 <router-link 
+                    to="/" 
+                    class="inline-flex items-center text-blue-600 dark:text-blue-400 font-semibold hover:underline"
+                >
+                    <span class="mr-2">←</span> Retour à l'accueil
+                </router-link>
             </div>
         </div>
     </main>
 </template>
 
 <style scoped>
-
-    #SectionLb {
-        margin-bottom: 100px;
-    }
-
-    .lb {
-
-        border: solid;
-
-        margin-right: 5px;
-        margin-left: 5px;
-
-        height: 800px;
-        width: 300px;
-    }
 </style>
